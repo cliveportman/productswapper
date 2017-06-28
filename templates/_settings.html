@@ -1,0 +1,33 @@
+{% import "_includes/forms" as forms %}
+
+{{ forms.checkboxField({
+	first: true,
+	label: "Allow swappable products?"|t,
+	name: 'allowSwappableProducts',
+	toggle: 'defaults',
+	checked: (settings.allowSwappableProducts is defined and settings.allowSwappableProducts is not empty ? true : false),
+}) }}
+
+{% if productTypes | length %}
+	<div id="defaults"{% if settings.allowSwappableProducts is not defined or not settings.allowSwappableProducts %} class="hidden"{% endif %}>
+		<table class="data fullwidth">
+			<thead>
+				<th>Product Type</th>
+				<th>Swappable</th>
+			</thead>
+			{% for productType in productTypes %}
+				<tr>
+					<td>{{ productType.name }}</td>
+					<td>
+						{{ forms.lightswitch({
+							name: "swappable[" ~ productType.handle ~ "]",
+							on:   (settings.swappable[productType.handle] is defined ? settings.swappable[productType.handle] : false),
+						}) }}
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+	</div>
+{% else %}
+	No product types exist.
+{% endif %}

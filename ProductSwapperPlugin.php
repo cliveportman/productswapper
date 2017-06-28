@@ -28,12 +28,39 @@ class ProductSwapperPlugin extends BasePlugin
         return 'https://cliveportman.co.uk';
     }
     
+    public function hasSettings()
+    {
+        return true;
+    }
+
+    public function getSettingsHtml()
+    {
+        $productTypes = craft()->commerce_productTypes->getAllProductTypes();
+
+        return craft()->templates->render('productswapper/_settings', array(
+            'settings' => $this->getSettings(),
+            'productTypes' => $productTypes,
+        ));
+    }
+
+    protected function defineSettings()
+    {
+        return array(
+            'allowSwappableProducts' => AttributeType::Bool,
+            'swappable' => AttributeType::Mixed,
+        );
+    }
+    
     
     public function init()
     {
         parent::init();
 
         craft()->on('commerce_cart.onBeforeAddToCart', function (Event $event) {
+
+            // TO ADD: check for the 'allowSwappabeProducts' setting to be turned on
+            // before continuing
+
             craft()->productSwapper->removeProductOfSameType($event->params['order'], $event->params['lineItem']);
         });
     }

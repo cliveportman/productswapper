@@ -14,6 +14,8 @@ class ProductSwapperService extends BaseApplicationComponent
 		$newProductType = $newLineItem->purchasable->product->type;
 		ProductSwapperPlugin::log("New product type is $newProductType.", LogLevel::Info);
 
+		// TO ADD: check the new product type is 'swappable' in the settings before continuing
+
 		// loop through the line items in the cart and remove them if the
 		// product type matches the new line item
 		$lineItems = $cart->lineItems;

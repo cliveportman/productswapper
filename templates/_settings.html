@@ -20,8 +20,8 @@
 					<td>{{ productType.name }}</td>
 					<td>
 						{{ forms.lightswitch({
-							name: "swappable[" ~ productType.handle ~ "]",
-							on:   (settings.swappable[productType.handle] is defined ? settings.swappable[productType.handle] : false),
+							name: "isSwappable[" ~ productType.handle ~ "]",
+							on:   (settings.isSwappable[productType.handle] is defined ? settings.isSwappable[productType.handle] : false),
 						}) }}
 					</td>
 				</tr>

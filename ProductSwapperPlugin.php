@@ -47,7 +47,7 @@ class ProductSwapperPlugin extends BasePlugin
     {
         return array(
             'allowSwappableProducts' => AttributeType::Bool,
-            'swappable' => AttributeType::Mixed,
+            'isSwappable' => AttributeType::Mixed,
         );
     }
     
@@ -58,10 +58,11 @@ class ProductSwapperPlugin extends BasePlugin
 
         craft()->on('commerce_cart.onBeforeAddToCart', function (Event $event) {
 
-            // TO ADD: check for the 'allowSwappabeProducts' setting to be turned on
-            // before continuing
-
-            craft()->productSwapper->removeProductOfSameType($event->params['order'], $event->params['lineItem']);
+            // check whether swappable products are allowed before continuing
+            $settings = craft()->plugins->getPlugin('productswapper')->getSettings();
+            if ($settings->allowSwappableProducts) {
+                craft()->productSwapper->removeProductOfSameType($event->params['order'], $event->params['lineItem']);
+            }
         });
     }
     

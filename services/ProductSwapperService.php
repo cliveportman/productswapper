@@ -18,6 +18,7 @@ class ProductSwapperService extends BaseApplicationComponent
 		// the keys are all the product type slugs
 		// if a product type has been saved as swappable then it's value will be 1
 		// otherwise it will be empty
+		
 		$settings = craft()->plugins->getPlugin('productswapper')->getSettings();
 		foreach ($settings->isSwappable as $key => $value) {
 
@@ -29,7 +30,7 @@ class ProductSwapperService extends BaseApplicationComponent
 				// product type matches the new line item
 				$lineItems = $cart->lineItems;
 				foreach ($lineItems as $lineItem) {
-					if ($lineItem->purchasable->product->type == $newProductType) {
+					if ($lineItem->purchasable->product->type === $newProductType) {
 						craft()->commerce_orders->removeLineItemFromOrder($cart, $lineItem);
 						ProductSwapperPlugin::log("Matching line item removed.", LogLevel::Info);
 					}
